@@ -9,7 +9,7 @@ Personal one-pager — a minimal, cartoon-style biography site.
 
 ## Run locally
 
-Just open `index.html` in a browser, or serve the folder:
+Just open `index.html` in a browser, or serve the folder
 
 ```bash
 npx serve .

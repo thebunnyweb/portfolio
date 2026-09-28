@@ -1508,6 +1508,15 @@
             text-wrap: pretty
         }
 
+        .note-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1.5px solid color-mix(in oklab, var(--ink) 20%, transparent);
+        }
+
         .note-sign {
             margin-top: 18px;
             font-family: 'DM Mono', monospace;
@@ -1625,7 +1634,7 @@
             <a class="logo" href="#top">harsh<span>.</span></a>
             <nav class="nav-links">
                 <a class="btn btn--sm" href="#about">About</a>
-                <a class="btn btn--sm" href="#reading">Reading</a>
+                <a class="btn btn--sm" href="#reading">Shelf</a>
                 <a class="btn btn--sm btn--solid" href="https://www.linkedin.com/in/reachharsh" target="_blank"
                     rel="noopener">LinkedIn ↗</a>
             </nav>
@@ -1830,6 +1839,55 @@
 
         /* ===== Shelf — tag: "Note" (opens popup, needs body) | "Video" | "Code" | "Article" (need url) ===== */
         const READS = [
+            {
+                id: "moka",
+                tag: "Code",
+                title: "Moka — Any LLM, any agent, any model",
+                src: "npm · mokahq.github.io",
+                url: "https://mokahq.github.io/mokalabs/tutorial/",
+                body: [
+                    "Getting an LLM talking to MCP tools and autonomous agents usually means wiring up bespoke clients, provider SDKs, tool loops, and ad-hoc logging before you can test a single prompt. I built Moka to solve all of that in one command.",
+                    "Zero-configuration provider discovery (OpenAI, Anthropic, Gemini, Groq, OpenRouter, Ollama, LM Studio), full Model Context Protocol (MCP) client support (stdio, Streamable HTTP, SSE), an Agent Skills loader, live inspector waterfalls for tool execution, and Generative UI (MCP Apps & A2UI) in an isolated sandbox.",
+                    "Published to npm as @mokalabs/sandbox for the instant local sandbox chat experience, and @mokalabs/core for building custom agent runtimes."
+                ],
+                links: [
+                    { text: "Tutorial & Docs ↗", url: "https://mokahq.github.io/mokalabs/tutorial/", primary: true },
+                    { text: "npm: @mokalabs/sandbox ↗", url: "https://www.npmjs.com/package/@mokalabs/sandbox" },
+                    { text: "npm: @mokalabs/core ↗", url: "https://www.npmjs.com/package/@mokalabs/core" },
+                    { text: "GitHub: mokahq/mokalabs ↗", url: "https://github.com/mokahq/mokalabs" }
+                ]
+            },
+            {
+                id: "park-pilot",
+                tag: "Code",
+                title: "Park Pilot — AI theme-park planner with live wait times",
+                src: "park-queues.vercel.app · Next.js 15",
+                url: "https://park-queues.vercel.app/",
+                body: [
+                    "Theme park touring shouldn't require juggling multiple spreadsheets, guessing crowd surges, and manually calculating wait times. Park Pilot is an AI-powered touring planner connected to live wait times across ~130 theme parks worldwide.",
+                    "It builds minute-by-minute touring itineraries factoring in real-time queue data from queue-times.com, rope-drop strategies, Lightning Lane selections, geographic walking optimization, toddler rider-switch, and parade anchors.",
+                    "Engineered with Next.js 15 App Router, Tailwind + shadcn/ui, Auth.js v5, Prisma with Turso/libSQL SQLite, and a bring-your-own-key LLM engine supporting Anthropic, OpenAI, Google Gemini, Groq, and OpenRouter."
+                ],
+                links: [
+                    { text: "Launch App ↗", url: "https://park-queues.vercel.app/", primary: true },
+                    { text: "View on GitHub ↗", url: "https://github.com/thebunnyweb/park-pilot" },
+                    { text: "Queue-Times Live Wait Integration ↗", url: "https://queue-times.com/" }
+                ]
+            },
+            {
+                id: "openmug",
+                tag: "Code",
+                title: "OpenMug (Android APK)",
+                src: "Android · Open Source",
+                body: [
+                    "Anyone who owns an Ember Mug knows the frustrating routine: you pour hot coffee, open the official app, and watch the spinner. The Bluetooth connection drops constantly, the app forgets your mug, hangs on reconnect loops, and demands an account login just to set a target temperature.",
+                    "OpenMug is a lightweight, open-source Android companion app built specifically to remove that nightmare. It communicates directly with the mug over Bluetooth Low Energy (BLE), reconnects in milliseconds on launch without failed handshakes, and requires zero cloud accounts, telemetry, or internet access.",
+                    "Direct temperature dial, reliable auto-reconnect, and battery status at a glance. You can download and install OpenMug directly below."
+                ],
+                links: [
+                    { text: "Download OpenMug APK ↓", url: "assets/openmug.apk", download: "openmug.apk", primary: true }
+                ]
+            },
             { id: "last-ten-percent", tag: "Note", title: "The last ten percent", src: "4 min", body: ["Most software is mediocre because nobody finishes it. The website loads, the button clicks, the data shows up — that's the first ninety percent, and most people stop there.", "The last ten percent is the empty state, the tooltip that explains why a button is disabled, the shortcut you discover by accident. It's never in the ticket and never rewarded in standup.", "So I block half a day for polish and defend it like a release blocker. A thousand tiny corrections is the whole difference between software that feels fine and software that feels inevitable."] },
             { id: "worst-minute", tag: "Note", title: "Design for the worst minute", src: "3 min", body: ["Working on trader risk screens taught me the average user experience is a lie.", "Software lives or dies on its worst minute — the spike, the slow API, the bad-internet day. Build the loading, partial-data and 'something's wrong' states first.", "Once those are right, the calm Tuesday afternoon takes care of itself. The reverse is never true."] },
             { id: "design-system", tag: "Note", title: "A design system is not a design", src: "5 min", body: ["A design system is a set of correct atoms. A great product is a series of correct decisions about which atoms, in what order, with how much air between them.", "Handing engineers a component library and calling it done is the most common failure I've seen in big-company UI work. The pieces look great alone and fight on the page.", "What makes a product feel coherent is hierarchy, rhythm and restraint. The system is the kit; the product is the song."] },
@@ -1842,13 +1900,42 @@
         const tags = ['All', ...['Note', 'Video', 'Code', 'Article'].filter(t => READS.some(r => r.tag === t))]; let cur = 'All';
         if (tags.length < 3) fl.style.display = 'none'; fl.innerHTML = tags.map(t => '<button class="filter" aria-pressed="' + (t === 'All') + '">' + t + '</button>').join('');
         const ICON = { Video: '<svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></svg>', Code: '<svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>', Article: '<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM9 11h7M9 15h7"/></svg>', Note: '<svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 7l3 3"/></svg>' };
-        let showAll = false; const LIMIT = 5;
-        function render() { const rows = READS.filter(r => cur === 'All' || r.tag === cur); const vis = showAll ? rows : rows.slice(0, LIMIT); list.innerHTML = vis.map(r => '<li class="read" id="read-' + r.id + '"><a class="row" href="' + (r.url || '#read-' + r.id) + '"' + (r.url ? ' target="_blank" rel="noopener"' : ' data-note="' + r.id + '"') + '><span class="ic" title="' + r.tag + '">' + (ICON[r.tag] || ICON.Article) + '</span><span class="t">' + r.title + ' <span class="src">' + r.src + '</span></span><span class="go"><button class="copy" data-id="' + r.id + '" title="Copy link">#</button><span class="arrow">' + (r.url ? '↗' : '→') + '</span></span></a></li>').join('') + (rows.length > LIMIT ? '<li class="more-row"><button class="filter" id="showAll">' + (showAll ? 'Show less' : 'Show all ' + rows.length) + '</button></li>' : ''); }
+        let showAll = false; const LIMIT = 6;
+        function render() {
+            const rows = READS.filter(r => cur === 'All' || r.tag === cur);
+            const vis = showAll ? rows : rows.slice(0, LIMIT);
+            list.innerHTML = vis.map(r => '<li class="read" id="read-' + r.id + '"><a class="row" href="' + (r.url && !r.body ? r.url : '#read-' + r.id) + '"' + (r.url && !r.body ? ' target="_blank" rel="noopener"' : ' data-note="' + r.id + '"') + '><span class="ic" title="' + r.tag + '">' + (ICON[r.tag] || ICON.Article) + '</span><span class="t">' + r.title + ' <span class="src">' + r.src + '</span></span><span class="go"><button class="copy" data-id="' + r.id + '" title="Copy link">#</button><span class="arrow">' + (r.url && !r.body ? '↗' : '→') + '</span></span></a></li>').join('') + (rows.length > LIMIT ? '<li class="more-row"><button class="filter" id="showAll">' + (showAll ? 'Show less' : 'Show all ' + rows.length) + '</button></li>' : '');
+        }
         render();
         fl.addEventListener('click', e => { const b = e.target.closest('.filter'); if (!b) return; cur = b.textContent; fl.querySelectorAll('.filter').forEach(x => x.setAttribute('aria-pressed', x === b)); render(); });
-        list.addEventListener('click', e => { if (e.target.id === 'showAll') { showAll = !showAll; render(); return; } const n = e.target.closest('[data-note]'); if (n && !e.target.closest('.copy')) { e.preventDefault(); openNote(n.dataset.note); return; } const c = e.target.closest('.copy'); if (!c) return; e.preventDefault(); e.stopPropagation(); const u = location.href.split('#')[0] + '#read-' + c.dataset.id; navigator.clipboard?.writeText(u); toast.textContent = 'Link copied'; toast.classList.add('on'); setTimeout(() => toast.classList.remove('on'), 1600); });
+        list.addEventListener('click', e => {
+            if (e.target.id === 'showAll') { showAll = !showAll; render(); return; }
+            const n = e.target.closest('[data-note]');
+            if (n && !e.target.closest('.copy')) { e.preventDefault(); openNote(n.dataset.note); return; }
+            const c = e.target.closest('.copy');
+            if (!c) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const u = location.href.split('#')[0] + '#read-' + c.dataset.id;
+            navigator.clipboard?.writeText(u);
+            toast.textContent = 'Link copied';
+            toast.classList.add('on');
+            setTimeout(() => toast.classList.remove('on'), 1600);
+        });
         const dlg = document.getElementById('note');
-        function openNote(id) { const r = READS.find(x => x.id === id); if (!r) return; dlg.querySelector('h3').textContent = r.title; dlg.querySelector('.note-meta').textContent = r.tag + ' · ' + r.src; dlg.querySelector('.note-body').innerHTML = r.body.map(p => '<p>' + p + '</p>').join(''); dlg.showModal(); history.replaceState(null, '', '#read-' + id); }
+        function openNote(id) {
+            const r = READS.find(x => x.id === id);
+            if (!r) return;
+            dlg.querySelector('h3').textContent = r.title;
+            dlg.querySelector('.note-meta').textContent = r.tag + ' · ' + r.src;
+            let html = r.body.map(p => '<p>' + p + '</p>').join('');
+            if (r.links && r.links.length) {
+                html += '<div class="note-links">' + r.links.map(l => '<a class="btn btn--sm' + (l.primary ? ' btn--solid' : '') + '" href="' + l.url + '"' + (l.download ? ' download="' + l.download + '"' : ' target="_blank" rel="noopener"') + '>' + l.text + '</a>').join('') + '</div>';
+            }
+            dlg.querySelector('.note-body').innerHTML = html;
+            dlg.showModal();
+            history.replaceState(null, '', '#read-' + id);
+        }
         dlg.addEventListener('click', e => { if (e.target === dlg || e.target.closest('.note-x')) dlg.close(); });
         dlg.addEventListener('close', () => history.replaceState(null, '', location.pathname));
         if (location.hash.startsWith('#read-') && READS.find(x => '#read-' + x.id === location.hash && x.body)) { setTimeout(() => openNote(location.hash.slice(6)), 300); }
